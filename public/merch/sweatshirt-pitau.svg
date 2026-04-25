@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 900">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="25%" r="78%">
+      <stop offset="0%" stop-color="#3a2a1d"/>
+      <stop offset="100%" stop-color="#100c09"/>
+    </radialGradient>
+    <linearGradient id="hoodie" x1="30%" x2="70%" y1="0%" y2="100%">
+      <stop offset="0%" stop-color="#2f3740"/>
+      <stop offset="100%" stop-color="#11161b"/>
+    </linearGradient>
+  </defs>
+  <rect width="900" height="900" fill="url(#bg)"/>
+  <ellipse cx="450" cy="780" rx="285" ry="48" fill="#080706" opacity="0.42"/>
+  <path d="M318 235c38-64 80-96 132-96s94 32 132 96l144 82-58 160-82-34v302H314V443l-82 34-58-160 144-82z" fill="url(#hoodie)" stroke="#f0b36a" stroke-opacity="0.2" stroke-width="4"/>
+  <path d="M348 236c24 54 58 82 102 82s78-28 102-82c-24-35-58-52-102-52s-78 17-102 52z" fill="#0f1216" stroke="#f0b36a" stroke-opacity="0.12" stroke-width="4"/>
+  <path d="M404 328c-20 50-30 106-30 168M496 328c20 50 30 106 30 168" fill="none" stroke="#f0b36a" stroke-opacity="0.22" stroke-width="6" stroke-linecap="round"/>
+  <path d="M372 614h156c-8 52-34 78-78 78s-70-26-78-78z" fill="#0e1114" opacity="0.55"/>
+  <g transform="translate(350 395)">
+    <circle cx="100" cy="100" r="79" fill="none" stroke="#f0b36a" stroke-width="10"/>
+    <text x="100" y="123" text-anchor="middle" fill="#f0b36a" font-family="Georgia, 'Times New Roman', serif" font-size="88" font-weight="700">&#x03C0;&#x03C4;</text>
+  </g>
+  <text x="450" y="822" text-anchor="middle" fill="#c6b49e" font-family="Inter, Arial, sans-serif" font-size="24" font-weight="700" letter-spacing="5">SWEAT-SHIRT LOGO PATRICK PITOT</text>
+</svg>

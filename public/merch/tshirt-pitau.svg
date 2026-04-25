@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 900">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="24%" r="76%">
+      <stop offset="0%" stop-color="#352315"/>
+      <stop offset="100%" stop-color="#100c09"/>
+    </radialGradient>
+    <linearGradient id="shirt" x1="50%" x2="50%" y1="0%" y2="100%">
+      <stop offset="0%" stop-color="#f8efe2"/>
+      <stop offset="100%" stop-color="#c9b99f"/>
+    </linearGradient>
+  </defs>
+  <rect width="900" height="900" fill="url(#bg)"/>
+  <ellipse cx="450" cy="760" rx="270" ry="42" fill="#080706" opacity="0.4"/>
+  <path d="M304 184c42 36 86 54 146 54s104-18 146-54l160 82-80 150-84-38v360H308V378l-84 38-80-150 160-82z" fill="url(#shirt)" stroke="#f0b36a" stroke-opacity="0.25" stroke-width="4"/>
+  <path d="M370 196c14 48 42 72 80 72s66-24 80-72" fill="none" stroke="#2a1f16" stroke-opacity="0.2" stroke-width="12"/>
+  <g transform="translate(338 358)">
+    <circle cx="112" cy="112" r="88" fill="none" stroke="#2a1f16" stroke-width="11"/>
+    <text x="112" y="137" text-anchor="middle" fill="#2a1f16" font-family="Georgia, 'Times New Roman', serif" font-size="96" font-weight="700">&#x03C0;&#x03C4;</text>
+  </g>
+  <text x="450" y="802" text-anchor="middle" fill="#c6b49e" font-family="Inter, Arial, sans-serif" font-size="24" font-weight="700" letter-spacing="5">T-SHIRT LOGO PATRICK PITOT</text>
+</svg>

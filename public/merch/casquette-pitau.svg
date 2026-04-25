@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 900">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="30%" r="70%">
+      <stop offset="0%" stop-color="#3a2a1d"/>
+      <stop offset="100%" stop-color="#130f0b"/>
+    </radialGradient>
+    <linearGradient id="cap" x1="0%" x2="100%" y1="0%" y2="100%">
+      <stop offset="0%" stop-color="#2b241e"/>
+      <stop offset="100%" stop-color="#0f0d0b"/>
+    </linearGradient>
+  </defs>
+  <rect width="900" height="900" fill="url(#bg)"/>
+  <ellipse cx="450" cy="610" rx="310" ry="68" fill="#080706" opacity="0.45"/>
+  <path d="M190 500c30-170 150-260 296-260 138 0 236 78 254 236-78 56-175 84-288 84-104 0-192-20-262-60z" fill="url(#cap)" stroke="#f0b36a" stroke-opacity="0.18" stroke-width="4"/>
+  <path d="M540 515c105-32 199-24 272 24-68 67-171 97-307 84-46-4-75-17-88-37 25-33 66-56 123-71z" fill="#19130f" stroke="#f0b36a" stroke-opacity="0.14" stroke-width="4"/>
+  <path d="M254 446c58 36 127 54 207 54 78 0 145-18 200-54" fill="none" stroke="#f0b36a" stroke-opacity="0.18" stroke-width="6"/>
+  <g transform="translate(371 352)">
+    <circle cx="78" cy="78" r="62" fill="none" stroke="#f0b36a" stroke-width="8"/>
+    <text x="78" y="96" text-anchor="middle" fill="#f0b36a" font-family="Georgia, 'Times New Roman', serif" font-size="68" font-weight="700">&#x03C0;&#x03C4;</text>
+  </g>
+  <text x="450" y="760" text-anchor="middle" fill="#c6b49e" font-family="Inter, Arial, sans-serif" font-size="24" font-weight="700" letter-spacing="5">CASQUETTE PATRICK PITOT</text>
+</svg>

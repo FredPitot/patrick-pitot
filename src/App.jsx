@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { NavLink, Route, Routes, useParams } from 'react-router-dom';
 
 const products = [
@@ -42,6 +43,27 @@ const products = [
     image: '/photos/bois-stabilise/loupe-de-peuplier.jpeg',
     price: 'Sur demande',
     description: 'Une option matière à valoriser pour les commandes personnalisées.',
+  },
+  {
+    name: 'Casquette logo πτ',
+    material: 'Textile',
+    image: '/merch/casquette-pitau.svg',
+    price: 'À définir',
+    description: 'Casquette sobre avec le monogramme Patrick Pitot brodé ou imprimé.',
+  },
+  {
+    name: 'T-shirt logo πτ',
+    material: 'Textile',
+    image: '/merch/tshirt-pitau.svg',
+    price: 'À définir',
+    description: 'T-shirt de promotion avec le logo πτ encerclé, pour accompagner la marque.',
+  },
+  {
+    name: 'Sweat-shirt logo πτ',
+    material: 'Textile',
+    image: '/merch/sweatshirt-pitau.svg',
+    price: 'À définir',
+    description: 'Sweat-shirt premium avec le logo Patrick Pitot, pensé comme produit dérivé.',
   },
 ];
 
@@ -216,8 +238,8 @@ function ShopPage() {
   return (
     <>
       <PageIntro eyebrow="Boutique" title="Premières pièces à présenter">
-        Les réalisations sont organisées comme des pièces artisanales ou petites séries, avec
-        une entrée claire par matière de manche.
+        Les réalisations sont organisées comme des pièces artisanales ou petites séries. La
+        boutique peut aussi accueillir des produits dérivés sobres autour du logo πτ.
       </PageIntro>
 
       <div className="product-grid">
@@ -409,30 +431,71 @@ function CraftPage() {
 }
 
 function ContactPage() {
+  const [formStatus, setFormStatus] = useState({ type: 'idle', message: '' });
+
+  async function handleCustomOrderSubmit(event) {
+    event.preventDefault();
+    setFormStatus({ type: 'loading', message: 'Enregistrement de votre demande...' });
+
+    const formData = new FormData(event.currentTarget);
+    const payload = {
+      customerName: formData.get('customerName'),
+      contact: formData.get('contact'),
+      material: formData.get('material'),
+      engravingText: formData.get('engravingText'),
+      message: formData.get('message'),
+    };
+
+    try {
+      const response = await fetch('/api/custom-order', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      });
+      const data = await response.json().catch(() => ({}));
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Impossible d’enregistrer la demande.');
+      }
+
+      event.currentTarget.reset();
+      setFormStatus({
+        type: 'success',
+        message: 'Votre demande est enregistrée. Patrick pourra la traiter depuis l’administration.',
+      });
+    } catch (error) {
+      setFormStatus({
+        type: 'error',
+        message: error.message || 'Une erreur est survenue pendant l’enregistrement.',
+      });
+    }
+  }
+
   return (
     <section className="contact contact-form-page">
       <div>
         <p className="eyebrow">Commande personnalisée</p>
         <h1>Préparer une demande de couteau sur mesure</h1>
-        <p>
-          Les contacts et commandes seront enregistrés en base dans les tables
-          <code> contact_request</code>, <code> custom_order_request</code> et
-          <code> order_request</code>. L’email n’est plus le canal principal.
-        </p>
       </div>
 
-      <form className="request-form" aria-label="Pré-demande de commande personnalisée">
+      <form
+        className="request-form"
+        aria-label="Pré-demande de commande personnalisée"
+        onSubmit={handleCustomOrderSubmit}
+      >
         <label>
           Nom
-          <input name="customerName" placeholder="Votre nom" type="text" />
+          <input name="customerName" placeholder="Votre nom" required type="text" />
         </label>
         <label>
           Téléphone ou email
-          <input name="contact" placeholder="Pour vous recontacter" type="text" />
+          <input name="contact" placeholder="Pour vous recontacter" required type="text" />
         </label>
         <label>
           Matière souhaitée
-          <select name="material" defaultValue="">
+          <select name="material" defaultValue="" required>
             <option value="" disabled>
               Choisir une matière
             </option>
@@ -442,16 +505,32 @@ function ContactPage() {
           </select>
         </label>
         <label>
+          Gravure souhaitée
+          <input
+            name="engravingText"
+            placeholder="Initiales, prénom, date, message court..."
+            type="text"
+          />
+        </label>
+        <label>
           Message
           <textarea
             name="message"
             placeholder="Usage, gravure, budget, délai souhaité..."
+            required
             rows="5"
           />
         </label>
-        <button className="button button-primary" disabled type="button">
-          Connexion base à venir
+        <button
+          className="button button-primary"
+          disabled={formStatus.type === 'loading'}
+          type="submit"
+        >
+          {formStatus.type === 'loading' ? 'Enregistrement...' : 'Enregistrer la demande'}
         </button>
+        {formStatus.message ? (
+          <p className={`form-status ${formStatus.type}`}>{formStatus.message}</p>
+        ) : null}
       </form>
     </section>
   );

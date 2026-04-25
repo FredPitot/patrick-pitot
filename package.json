@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@vitejs/plugin-react": "latest",
+    "pg": "^8.20.0",
     "react": "latest",
     "react-dom": "latest",
     "react-router-dom": "^7.14.2",

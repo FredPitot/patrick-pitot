@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { NavLink, Route, Routes, useParams } from 'react-router-dom';
 
 const products = [
@@ -157,6 +157,9 @@ function Layout() {
           <Route path="/personnalisation" element={<PersonalizationPage />} />
           <Route path="/savoir-faire" element={<CraftPage />} />
           <Route path="/contact" element={<ContactPage />} />
+          <Route path="/admin" element={<AdminLoginPage />} />
+          <Route path="/admin/verify" element={<AdminVerifyPage />} />
+          <Route path="/admin/demandes" element={<AdminRequestsPage />} />
         </Routes>
       </main>
     </>
@@ -533,6 +536,218 @@ function ContactPage() {
         ) : null}
       </form>
     </section>
+  );
+}
+
+function AdminLoginPage() {
+  const [status, setStatus] = useState({ type: 'idle', message: '', devMagicLink: '' });
+
+  async function handleSubmit(event) {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+    const email = formData.get('email');
+    setStatus({ type: 'loading', message: 'Préparation du lien magique...', devMagicLink: '' });
+
+    try {
+      const response = await fetch('/api/admin/magic-link/request', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      });
+      const data = await response.json().catch(() => ({}));
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Impossible de générer le lien magique.');
+      }
+
+      setStatus({
+        type: 'success',
+        message: data.message,
+        devMagicLink: data.devMagicLink || '',
+      });
+    } catch (error) {
+      setStatus({
+        type: 'error',
+        message: error.message || 'Une erreur est survenue.',
+        devMagicLink: '',
+      });
+    }
+  }
+
+  return (
+    <section className="admin-page">
+      <div className="admin-card">
+        <p className="eyebrow">Administration</p>
+        <h1>Recevoir un lien magique</h1>
+        <p>
+          L’accès est réservé aux emails autorisés. Si l’adresse est connue, un lien de
+          connexion temporaire est envoyé pour consulter les demandes client.
+        </p>
+        <form className="request-form" onSubmit={handleSubmit}>
+          <label>
+            Email administrateur
+            <input
+              name="email"
+              placeholder="compta@laboratoire-pitot.com"
+              required
+              type="email"
+            />
+          </label>
+          <button className="button button-primary" disabled={status.type === 'loading'} type="submit">
+            {status.type === 'loading' ? 'Envoi...' : 'Recevoir le lien magique'}
+          </button>
+          {status.message ? <p className={`form-status ${status.type}`}>{status.message}</p> : null}
+          {status.devMagicLink ? (
+            <NavLink className="admin-dev-link" to={new URL(status.devMagicLink).pathname + new URL(status.devMagicLink).search}>
+              Ouvrir le lien magique local
+            </NavLink>
+          ) : null}
+        </form>
+      </div>
+    </section>
+  );
+}
+
+function AdminVerifyPage() {
+  const [status, setStatus] = useState({ type: 'loading', message: 'Vérification du lien...' });
+
+  useEffect(() => {
+    const token = new URLSearchParams(window.location.search).get('token');
+
+    async function verifyToken() {
+      if (!token) {
+        setStatus({ type: 'error', message: 'Token manquant.' });
+        return;
+      }
+
+      try {
+        const response = await fetch(`/api/admin/magic-link/verify?token=${encodeURIComponent(token)}`, {
+          credentials: 'include',
+        });
+        const data = await response.json().catch(() => ({}));
+
+        if (!response.ok) {
+          throw new Error(data.error || 'Lien magique invalide.');
+        }
+
+        setStatus({ type: 'success', message: 'Connexion réussie. Redirection...' });
+        window.setTimeout(() => {
+          window.location.href = '/admin/demandes';
+        }, 700);
+      } catch (error) {
+        setStatus({ type: 'error', message: error.message || 'Impossible de vérifier le lien.' });
+      }
+    }
+
+    verifyToken();
+  }, []);
+
+  return (
+    <section className="admin-page">
+      <div className="admin-card">
+        <p className="eyebrow">Administration</p>
+        <h1>Connexion</h1>
+        <p className={`form-status ${status.type}`}>{status.message}</p>
+        {status.type === 'error' ? (
+          <NavLink className="button button-secondary" to="/admin">
+            Demander un nouveau lien
+          </NavLink>
+        ) : null}
+      </div>
+    </section>
+  );
+}
+
+function AdminRequestsPage() {
+  const [state, setState] = useState({
+    type: 'loading',
+    message: 'Chargement des demandes...',
+    contacts: [],
+    customOrders: [],
+  });
+
+  useEffect(() => {
+    async function loadRequests() {
+      try {
+        const response = await fetch('/api/admin/requests', { credentials: 'include' });
+        const data = await response.json().catch(() => ({}));
+
+        if (!response.ok) {
+          throw new Error(data.error || 'Accès admin requis.');
+        }
+
+        setState({
+          type: 'success',
+          message: '',
+          contacts: data.contacts || [],
+          customOrders: data.customOrders || [],
+        });
+      } catch (error) {
+        setState({
+          type: 'error',
+          message: error.message || 'Impossible de charger les demandes.',
+          contacts: [],
+          customOrders: [],
+        });
+      }
+    }
+
+    loadRequests();
+  }, []);
+
+  return (
+    <section className="admin-requests">
+      <div className="section-heading">
+        <p className="eyebrow">Administration</p>
+        <h1>Demandes client</h1>
+        <p>Les messages et demandes personnalisées sont lus depuis PostgreSQL.</p>
+      </div>
+
+      {state.type === 'loading' || state.type === 'error' ? (
+        <div className="admin-card">
+          <p className={`form-status ${state.type}`}>{state.message}</p>
+          {state.type === 'error' ? (
+            <NavLink className="button button-secondary" to="/admin">
+              Recevoir un lien magique
+            </NavLink>
+          ) : null}
+        </div>
+      ) : (
+        <div className="admin-grid">
+          <AdminRequestColumn title="Commandes personnalisées" rows={state.customOrders} type="custom" />
+          <AdminRequestColumn title="Messages de contact" rows={state.contacts} type="contact" />
+        </div>
+      )}
+    </section>
+  );
+}
+
+function AdminRequestColumn({ title, rows, type }) {
+  return (
+    <div className="admin-column">
+      <h2>{title}</h2>
+      {rows.length === 0 ? <p className="empty-state">Aucune demande pour le moment.</p> : null}
+      {rows.map((row) => (
+        <article className="admin-request-card" key={`${type}-${row.id}`}>
+          <div className="admin-request-heading">
+            <h3>{row.customer_name}</h3>
+            <span>{row.status}</span>
+          </div>
+          {type === 'custom' ? (
+            <p className="product-category">{row.material_name || 'Matière à préciser'}</p>
+          ) : (
+            <p className="product-category">{row.subject || 'Message'}</p>
+          )}
+          <p>{row.message}</p>
+          {row.engraving_text ? <p>Gravure : {row.engraving_text}</p> : null}
+          <div className="admin-contact-lines">
+            {row.customer_email ? <a href={`mailto:${row.customer_email}`}>{row.customer_email}</a> : null}
+            {row.customer_phone ? <a href={`tel:${row.customer_phone}`}>{row.customer_phone}</a> : null}
+            <small>{new Date(row.created_at).toLocaleString('fr-FR')}</small>
+          </div>
+        </article>
+      ))}
+    </div>
   );
 }
 

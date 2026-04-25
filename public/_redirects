@@ -1,3 +1,7 @@
 /api/contact       /.netlify/functions/contact       200
 /api/custom-order  /.netlify/functions/custom-order  200
+/api/admin/magic-link/request  /.netlify/functions/admin-magic-link-request  200
+/api/admin/magic-link/verify   /.netlify/functions/admin-magic-link-verify   200
+/api/admin/session             /.netlify/functions/admin-session             200
+/api/admin/requests            /.netlify/functions/admin-requests            200
 /*    /index.html   200

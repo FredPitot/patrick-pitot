@@ -60,10 +60,59 @@ main {
 }
 
 .brand {
+  display: inline-flex;
+  min-width: max-content;
+}
+
+.logo-lockup {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo-mark {
+  width: 52px;
+  height: 52px;
+  flex: 0 0 auto;
+}
+
+.logo-mark circle {
+  fill: rgba(248, 239, 226, 0.04);
+  stroke: var(--accent-light);
+  stroke-width: 2;
+}
+
+.logo-mark path {
+  fill: none;
+  stroke: rgba(248, 239, 226, 0.42);
+  stroke-linecap: round;
+  stroke-width: 1.4;
+}
+
+.logo-mark text {
+  fill: var(--text);
   font-family: Georgia, "Times New Roman", serif;
-  font-size: clamp(1.35rem, 2vw, 1.75rem);
+  font-size: 22px;
   font-weight: 700;
-  letter-spacing: 0.04em;
+}
+
+.logo-text {
+  display: grid;
+  gap: 2px;
+}
+
+.logo-text strong {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(1.18rem, 1.8vw, 1.55rem);
+  letter-spacing: 0.035em;
+}
+
+.logo-text small {
+  color: var(--muted);
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
 }
 
 .nav {

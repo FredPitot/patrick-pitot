@@ -74,7 +74,7 @@ Le site doit transmettre une impression de travail manuel, de précision, de car
 ### Contact
 
 - Formulaire de contact.
-- Coordonnées publiques si disponibles.
+- Email de contact du site : `compta@laboratoire-pitot.com`.
 - Liens vers réseaux sociaux si disponibles.
 
 ## Fonctionnalités eCommerce à prévoir
@@ -97,6 +97,7 @@ Le site doit transmettre une impression de travail manuel, de précision, de car
 - Liste des produits ou catégories de produits.
 - Prix et conditions de vente.
 - Zones et modes de livraison.
+- Email de contact : `compta@laboratoire-pitot.com`.
 - Informations légales de l'entreprise.
 
 ## Notes ouvertes

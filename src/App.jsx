@@ -74,12 +74,35 @@ const navItems = [
   { to: '/contact', label: 'Contact' },
 ];
 
+function Logo() {
+  return (
+    <span className="logo-lockup" aria-hidden="true">
+      <svg className="logo-mark" viewBox="0 0 64 64" role="img">
+        <circle cx="32" cy="32" r="29" />
+        <path d="M16 24h22" />
+        <path d="M23 24v18" />
+        <path d="M38 23c6 0 10 4 10 9s-4 9-10 9" />
+        <text x="14" y="39">
+          π
+        </text>
+        <text x="36" y="39">
+          τ
+        </text>
+      </svg>
+      <span className="logo-text">
+        <strong>Patrick Pitot</strong>
+        <small>Coutellerie artisanale</small>
+      </span>
+    </span>
+  );
+}
+
 function Layout() {
   return (
     <>
       <header className="site-header">
         <NavLink className="brand" to="/" aria-label="Accueil Patrick Pitot">
-          Patrick Pitot
+          <Logo />
         </NavLink>
         <nav className="nav" aria-label="Navigation principale">
           {navItems.map((item) => (

@@ -1,4 +1,4 @@
-import { NavLink, Route, Routes } from 'react-router-dom';
+import { NavLink, Route, Routes, useParams } from 'react-router-dom';
 
 const products = [
   {
@@ -65,10 +65,26 @@ const materials = [
 
 const highlights = ['Bois naturel', 'Bois stabilisé', 'Micarta'];
 
+const certificatePreview = {
+  publicId: 'demo-pt-2026-001',
+  status: 'Authentique',
+  serialNumber: 'PT-2026-001',
+  name: 'Couteau bois naturel veiné',
+  material: 'Bois naturel',
+  madeAt: 'Avril 2026',
+  image: '/photos/bois-naturel/bois-naturel-veine.jpeg',
+  description:
+    'Pièce artisanale avec manche en bois naturel, lame signée et finition pensée pour un usage durable.',
+  engraving: 'Gravure personnalisée sur lame',
+  care:
+    'Essuyer après usage, éviter le lave-vaisselle, nourrir le manche avec une huile adaptée si nécessaire.',
+};
+
 const navItems = [
   { to: '/', label: 'Accueil' },
   { to: '/boutique', label: 'Boutique' },
   { to: '/matieres', label: 'Matières' },
+  { to: '/certificats', label: 'Certificats NFC' },
   { to: '/personnalisation', label: 'Personnalisation' },
   { to: '/savoir-faire', label: 'Savoir-faire' },
   { to: '/contact', label: 'Contact' },
@@ -114,6 +130,8 @@ function Layout() {
           <Route path="/" element={<HomePage />} />
           <Route path="/boutique" element={<ShopPage />} />
           <Route path="/matieres" element={<MaterialsPage />} />
+          <Route path="/certificats" element={<CertificatesPage />} />
+          <Route path="/certificat/:publicId" element={<CertificateDetailPage />} />
           <Route path="/personnalisation" element={<PersonalizationPage />} />
           <Route path="/savoir-faire" element={<CraftPage />} />
           <Route path="/contact" element={<ContactPage />} />
@@ -181,6 +199,10 @@ function HomePage() {
           <span>Matières</span>
           <strong>Comparer bois et micarta</strong>
         </NavLink>
+        <NavLink to="/certificats">
+          <span>NFC</span>
+          <strong>Authentifier une pièce</strong>
+        </NavLink>
         <NavLink to="/contact">
           <span>Sur mesure</span>
           <strong>Préparer une commande</strong>
@@ -241,6 +263,103 @@ function MaterialsPage() {
   );
 }
 
+function CertificatesPage() {
+  return (
+    <>
+      <PageIntro eyebrow="Certificat numérique" title="Une puce NFC pour raconter et authentifier la pièce">
+        Certaines créations pourront intégrer une puce NFC passive dans le manche. Au scan,
+        le client arrive sur une fiche publique unique qui confirme l’authenticité du couteau
+        et rassemble son histoire, ses photos officielles et ses conseils d’entretien.
+      </PageIntro>
+
+      <section className="nfc-feature">
+        <div className="nfc-card">
+          <span className="nfc-icon">NFC</span>
+          <h2>Scan court, preuve claire.</h2>
+          <p>
+            La puce contient une URL publique unique du type
+            <code> /certificat/:publicId</code>. Elle ne géolocalise pas le couteau :
+            elle ouvre simplement le certificat quand le téléphone est approché du manche.
+          </p>
+          <NavLink className="button button-primary" to={`/certificat/${certificatePreview.publicId}`}>
+            Voir un certificat exemple
+          </NavLink>
+        </div>
+
+        <div className="nfc-steps" aria-label="Fonctionnement du certificat NFC">
+          <article>
+            <strong>1</strong>
+            <h3>Puce intégrée</h3>
+            <p>Une puce NFC passive est programmée avec l’URL publique du certificat.</p>
+          </article>
+          <article>
+            <strong>2</strong>
+            <h3>Scan client</h3>
+            <p>Le téléphone ouvre la page du couteau, sans installation d’application.</p>
+          </article>
+          <article>
+            <strong>3</strong>
+            <h3>Certificat vivant</h3>
+            <p>Patrick peut activer, révoquer ou enrichir les informations depuis l’admin.</p>
+          </article>
+        </div>
+      </section>
+    </>
+  );
+}
+
+function CertificateDetailPage() {
+  const { publicId } = useParams();
+
+  return (
+    <section className="certificate-page">
+      <div className="certificate-visual">
+        <img src={certificatePreview.image} alt={certificatePreview.name} />
+      </div>
+
+      <div className="certificate-panel">
+        <p className="eyebrow">Certificat d’authenticité</p>
+        <h1>{certificatePreview.name}</h1>
+        <div className="certificate-status">
+          <span>{certificatePreview.status}</span>
+          <small>ID public : {publicId}</small>
+        </div>
+
+        <dl className="certificate-details">
+          <div>
+            <dt>Numéro de série</dt>
+            <dd>{certificatePreview.serialNumber}</dd>
+          </div>
+          <div>
+            <dt>Matière</dt>
+            <dd>{certificatePreview.material}</dd>
+          </div>
+          <div>
+            <dt>Fabrication</dt>
+            <dd>{certificatePreview.madeAt}</dd>
+          </div>
+          <div>
+            <dt>Personnalisation</dt>
+            <dd>{certificatePreview.engraving}</dd>
+          </div>
+        </dl>
+
+        <p>{certificatePreview.description}</p>
+        <p className="care-note">{certificatePreview.care}</p>
+
+        <div className="hero-actions">
+          <NavLink className="button button-primary" to="/contact">
+            Contacter l’atelier
+          </NavLink>
+          <NavLink className="button button-secondary" to="/boutique">
+            Voir la boutique
+          </NavLink>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function PersonalizationPage() {
   return (
     <section className="engraving">
@@ -257,10 +376,16 @@ function PersonalizationPage() {
           La lame peut recevoir une inscription personnalisée : initiales, date, prénom,
           message court ou marque de série. Cette option transforme le couteau en objet plus
           personnel, pensé pour un cadeau, une commande spéciale ou une pièce de collection.
+          Les pièces premium pourront aussi recevoir un certificat numérique NFC.
         </p>
-        <NavLink className="button button-secondary" to="/contact">
-          Demander une gravure
-        </NavLink>
+        <div className="hero-actions">
+          <NavLink className="button button-secondary" to="/contact">
+            Demander une gravure
+          </NavLink>
+          <NavLink className="button button-secondary" to="/certificats">
+            Découvrir la NFC
+          </NavLink>
+        </div>
       </div>
     </section>
   );
@@ -276,7 +401,8 @@ function CraftPage() {
       <p>
         Chaque couteau peut raconter une intention : un usage précis, une essence de bois,
         une forme de manche, une finition. Le site doit montrer autant le résultat que les
-        gestes de fabrication, pour rendre visible le travail artisanal.
+        gestes de fabrication, pour rendre visible le travail artisanal. Les certificats NFC
+        prolongent cette logique en conservant l’histoire numérique de certaines pièces.
       </p>
     </section>
   );

@@ -39,7 +39,7 @@ const products = [
   {
     name: 'Peuplier stabilisé',
     material: 'Bois stabilisé',
-    image: '/photos/bois-stabilise/peuplier.jpeg',
+    image: '/photos/bois-stabilise/loupe-de-peuplier.jpeg',
     price: 'Sur demande',
     description: 'Une option matière à valoriser pour les commandes personnalisées.',
   },
@@ -54,12 +54,12 @@ const materials = [
   {
     name: 'Bois stabilisé',
     text: 'Une matière travaillée pour gagner en tenue, en profondeur et en durabilité.',
-    image: '/photos/bois-stabilise/peuplier.jpeg',
+    image: '/photos/bois-stabilise/loupe-de-peuplier.jpeg',
   },
   {
     name: 'Micarta',
     text: 'Un rendu plus technique, coloré et résistant, adapté aux usages réguliers.',
-    image: '/photos/micarta/micarta-rose.jpeg',
+    image: '/photos/micarta/micarta-rouge.jpeg',
   },
 ];
 
@@ -78,16 +78,8 @@ function Logo() {
   return (
     <span className="logo-lockup" aria-hidden="true">
       <svg className="logo-mark" viewBox="0 0 64 64" role="img">
-        <circle cx="32" cy="32" r="29" />
-        <path d="M16 24h22" />
-        <path d="M23 24v18" />
-        <path d="M38 23c6 0 10 4 10 9s-4 9-10 9" />
-        <text x="14" y="39">
-          π
-        </text>
-        <text x="36" y="39">
-          τ
-        </text>
+        <circle cx="32" cy="32" r="28" />
+        <text x="32" y="41">πτ</text>
       </svg>
       <span className="logo-text">
         <strong>Patrick Pitot</strong>

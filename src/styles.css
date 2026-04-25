@@ -77,23 +77,17 @@ main {
 }
 
 .logo-mark circle {
-  fill: rgba(248, 239, 226, 0.04);
+  fill: none;
   stroke: var(--accent-light);
   stroke-width: 2;
 }
 
-.logo-mark path {
-  fill: none;
-  stroke: rgba(248, 239, 226, 0.42);
-  stroke-linecap: round;
-  stroke-width: 1.4;
-}
-
 .logo-mark text {
-  fill: var(--text);
+  fill: var(--accent-light);
   font-family: Georgia, "Times New Roman", serif;
-  font-size: 22px;
+  font-size: 30px;
   font-weight: 700;
+  text-anchor: middle;
 }
 
 .logo-text {

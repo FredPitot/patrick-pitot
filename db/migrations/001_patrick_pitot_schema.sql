@@ -267,7 +267,7 @@ seed_products(slug, name, material_slug, short_description, image_url, sort_orde
       'Peuplier stabilise',
       'bois-stabilise',
       'Une option matiere a valoriser pour les commandes personnalisees.',
-      '/photos/bois-stabilise/peuplier.jpeg',
+      '/photos/bois-stabilise/loupe-de-peuplier.jpeg',
       60
     )
 ),
